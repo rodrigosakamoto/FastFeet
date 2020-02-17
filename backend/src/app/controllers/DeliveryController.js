@@ -5,6 +5,9 @@ import File from '../models/File';
 import Deliveryman from '../models/Deliveryman';
 import Recipient from '../models/Recipient';
 
+import NewdeliveryMail from '../jobs/NewdeliveryMail';
+import Queue from '../../lib/Queue';
+
 class DeliveryController {
   // Listar entregas
   async index(req, res) {
@@ -75,6 +78,12 @@ class DeliveryController {
     const { id } = await Delivery.create({
       recipient_id,
       deliveryman_id,
+      product,
+    });
+
+    await Queue.add(NewdeliveryMail.key, {
+      recipient,
+      deliveryman,
       product,
     });
 
