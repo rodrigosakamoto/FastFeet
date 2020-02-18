@@ -10,6 +10,7 @@ import DeliveryController from './app/controllers/DeliveryController';
 import OpenDeliveryController from './app/controllers/OpenDeliveriesController';
 import DeliveredController from './app/controllers/DeliveredController';
 import DeliveryStatusController from './app/controllers/DeliveryStatusController';
+import DeliveryProblemsController from './app/controllers/DeliveryProblemController';
 
 // Middlewares
 import authMiddleware from './app/middlewares/auth';
@@ -21,7 +22,6 @@ routes.post('/sessions', SessionController.store);
 
 // Retirada
 routes.get('/deliverymans/:deliverymanId', OpenDeliveryController.index);
-
 routes.put(
   '/deliveries/status/:deliverymanId/:deliveryId',
   DeliveryStatusController.update
@@ -32,11 +32,18 @@ routes.get(
   '/deliverymans/:deliverymanId/deliveries',
   DeliveredController.index
 );
-
 routes.put(
   '/deliveries/delivered/:deliverymanId/:deliveryId',
   upload.single('file'),
   DeliveredController.update
+);
+
+// Problemas
+routes.get('/delivery/:deliveryId/problems', DeliveryProblemsController.index);
+routes.post('/delivery/:deliveryId/problems', DeliveryProblemsController.store);
+routes.delete(
+  '/problem/:problemId/cancel-delivery',
+  DeliveryProblemsController.delete
 );
 
 // Middleware de autenticação

@@ -53,6 +53,7 @@ class DeliveryStatusController {
 
     const numDeliveries = await Delivery.count({
       where: {
+        id: deliveryId,
         start_date: {
           [Op.between]: [startOfDay(dateNow), endOfDay(dateNow)],
         },
