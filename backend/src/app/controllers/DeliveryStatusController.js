@@ -1,35 +1,16 @@
+import { startOfDay, endOfDay } from 'date-fns';
 import { Op } from 'sequelize';
 import Delivery from '../models/Delivery';
 import Deliveryman from '../models/Deliveryman';
-import File from '../models/File';
 
-class DeliveredController {
-  async index(req, res) {
-    const { deliverymanId } = req.params;
-
-    const deliveryman = await Deliveryman.findByPk(deliverymanId);
-
-    if (!deliveryman) {
-      return res.status(400).json({ error: 'Deliveryman does not exists' });
-    }
-
-    const deliveries = await Delivery.findAll({
-      where: {
-        deliveryman_id: deliverymanId,
-        end_date: { [Op.ne]: null },
-      },
-    });
-
-    return res.json(deliveries);
-  }
-
+class DeliveryStatusController {
   async update(req, res) {
     const { deliverymanId, deliveryId } = req.params;
 
     const deliveryman = await Deliveryman.findByPk(deliverymanId);
 
     if (!deliveryman) {
-      return res.status(400).json({ error: 'Deliverman does not exists' });
+      return res.status(400).json({ error: 'Deliveryman does no exist.' });
     }
 
     const delivery = await Delivery.findByPk(deliveryId);
@@ -44,10 +25,10 @@ class DeliveredController {
         .json({ error: 'You can only edit your own delivery ' });
     }
 
-    if (!delivery.start_date) {
+    if (delivery.start_date) {
       return res
         .status(401)
-        .json({ error: 'This delivery has not yet been withdrawn' });
+        .json({ error: 'This delivery has already been withdrawn' });
     }
 
     if (delivery.end_date) {
@@ -60,26 +41,35 @@ class DeliveredController {
       return res.status(400).json({ error: 'This delivery has been canceled' });
     }
 
-    if (!req.file) {
+    const deliveryHour = new Date().getHours();
+
+    if (deliveryHour < 8 || deliveryHour > 18) {
       return res
         .status(400)
-        .json({ error: 'You must send a signature picture.' });
+        .json({ error: 'You can only withdraw from 08:00h to 18:00h.' });
     }
 
-    const { originalname: name, filename: path } = req.file;
+    const dateNow = new Date();
 
-    const file = await File.create({
-      name,
-      path,
+    const numDeliveries = await Delivery.count({
+      where: {
+        start_date: {
+          [Op.between]: [startOfDay(dateNow), endOfDay(dateNow)],
+        },
+      },
     });
 
+    if (numDeliveries >= 5) {
+      return res
+        .status(400)
+        .json({ error: 'you can only make 5 deliveries a day' });
+    }
     const updateDelivery = await delivery.update({
-      end_date: new Date(),
-      signature_id: file.id,
+      start_date: new Date(),
     });
 
     return res.json(updateDelivery);
   }
 }
 
-export default new DeliveredController();
+export default new DeliveryStatusController();
