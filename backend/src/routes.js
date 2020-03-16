@@ -50,6 +50,7 @@ routes.delete(
 routes.use(authMiddleware);
 
 // Destinatarios
+routes.get('/recipients', RecipientController.index);
 routes.post('/recipients', RecipientController.store);
 routes.put('/recipients/:id', RecipientController.update);
 

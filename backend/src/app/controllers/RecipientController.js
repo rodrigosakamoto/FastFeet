@@ -1,8 +1,45 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
 
 import Recipient from '../models/Recipient';
 
 class RecipientController {
+  // Lista de Destinatários
+  async index(req, res) {
+    const { q } = req.query;
+    const recipients = q
+      ? await Recipient.findAll({
+          attributes: [
+            'id',
+            'name',
+            'street',
+            'number',
+            'complement',
+            'state',
+            'city',
+            'zipcode',
+          ],
+          where: {
+            name: {
+              [Op.iLike]: q,
+            },
+          },
+        })
+      : await Recipient.findAll({
+          attributes: [
+            'id',
+            'name',
+            'street',
+            'number',
+            'complement',
+            'state',
+            'city',
+            'zipcode',
+          ],
+        });
+    return res.json(recipients);
+  }
+
   // Update de destinatários
   async update(req, res) {
     // Validação dos dados de entrada

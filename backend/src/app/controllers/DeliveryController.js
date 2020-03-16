@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-
+import { Op } from 'sequelize';
 import Delivery from '../models/Delivery';
 import File from '../models/File';
 import Deliveryman from '../models/Deliveryman';
@@ -11,41 +11,96 @@ import Queue from '../../lib/Queue';
 class DeliveryController {
   // Listar entregas
   async index(req, res) {
-    const deliveries = await Delivery.findAll({
-      attributes: ['id', 'product', 'canceled_at', 'start_date', 'end_date'],
-      include: [
-        {
-          model: Recipient,
-          as: 'recipient',
+    const { q } = req.query;
+
+    const deliveries = q
+      ? await Delivery.findAll({
           attributes: [
-            'name',
-            'street',
-            'number',
-            'complement',
-            'state',
-            'city',
-            'zipcode',
+            'id',
+            'product',
+            'canceled_at',
+            'start_date',
+            'end_date',
           ],
-        },
-        {
-          model: Deliveryman,
-          as: 'deliveryman',
-          attributes: ['id', 'name', 'email'],
           include: [
             {
+              model: Recipient,
+              as: 'recipient',
+              attributes: [
+                'name',
+                'street',
+                'number',
+                'complement',
+                'state',
+                'city',
+                'zipcode',
+              ],
+            },
+            {
+              model: Deliveryman,
+              as: 'deliveryman',
+              attributes: ['id', 'name', 'email'],
+              include: [
+                {
+                  model: File,
+                  as: 'avatar',
+                  attributes: ['id', 'path', 'url'],
+                },
+              ],
+            },
+            {
               model: File,
-              as: 'avatar',
+              as: 'signature',
               attributes: ['id', 'path', 'url'],
             },
           ],
-        },
-        {
-          model: File,
-          as: 'signature',
-          attributes: ['id', 'path', 'url'],
-        },
-      ],
-    });
+          where: {
+            product: {
+              [Op.iLike]: q,
+            },
+          },
+        })
+      : await Delivery.findAll({
+          attributes: [
+            'id',
+            'product',
+            'canceled_at',
+            'start_date',
+            'end_date',
+          ],
+          include: [
+            {
+              model: Recipient,
+              as: 'recipient',
+              attributes: [
+                'name',
+                'street',
+                'number',
+                'complement',
+                'state',
+                'city',
+                'zipcode',
+              ],
+            },
+            {
+              model: Deliveryman,
+              as: 'deliveryman',
+              attributes: ['id', 'name', 'email'],
+              include: [
+                {
+                  model: File,
+                  as: 'avatar',
+                  attributes: ['id', 'path', 'url'],
+                },
+              ],
+            },
+            {
+              model: File,
+              as: 'signature',
+              attributes: ['id', 'path', 'url'],
+            },
+          ],
+        });
     return res.json(deliveries);
   }
 
