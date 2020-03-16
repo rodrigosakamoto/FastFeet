@@ -24,6 +24,10 @@ export const Content = styled.div`
         font-size: 15px;
         font-weight: bold;
         margin-right: 20px;
+
+        &.active {
+          color: #444;
+        }
       }
     }
 
@@ -51,6 +55,7 @@ export const Content = styled.div`
       background: none;
       color: #de3b3b;
       font-size: 14px;
+      text-align: right;
     }
   }
 `;
