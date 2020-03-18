@@ -26,7 +26,7 @@ export default createGlobalStyle`
     text-decoration: none;
   }
 
-  ul {
+  li {
     list-style: none;
   }
 

@@ -12,7 +12,7 @@ module.exports = {
         references: { model: 'deliveries', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
-        allowNull: false,
+        allowNull: true,
       },
       description: {
         type: Sequelize.STRING,
