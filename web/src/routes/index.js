@@ -10,6 +10,7 @@ import Deliverymans from '../pages/Deliverymans';
 
 import Deliveries from '../pages/Deliveries';
 import DeliveryAdd from '../pages/DeliveryAdd';
+import DeliveryEdit from '../pages/DeliveryEdit';
 
 export default function Routes() {
   return (
@@ -20,6 +21,7 @@ export default function Routes() {
 
       <Route path="/deliveries" exact component={Deliveries} isPrivate />
       <Route path="/deliveries/add" exact component={DeliveryAdd} isPrivate />
+      <Route path="/deliveries/edit" exact component={DeliveryEdit} isPrivate />
     </Switch>
   );
 }

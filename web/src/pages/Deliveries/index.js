@@ -17,7 +17,10 @@ import DeliveryStatus from '~/components/DeliveryStatus';
 import api from '../../services/api';
 import history from '~/services/history';
 
-import { removeDeliveryRequest } from '~/store/modules/delivery/actions';
+import {
+  removeDeliveryRequest,
+  editDeliveryRequest,
+} from '~/store/modules/delivery/actions';
 
 export default function Deliveries() {
   const dispatch = useDispatch();
@@ -40,6 +43,7 @@ export default function Deliveries() {
 
   function handleSubmit({ produto }) {
     setProduct(produto);
+    setPage(1);
   }
 
   function handleDelete(id) {
@@ -47,6 +51,11 @@ export default function Deliveries() {
     if (resp === true) {
       dispatch(removeDeliveryRequest(id));
     }
+  }
+
+  function handleEdit(id) {
+    history.push('/deliveries/edit');
+    dispatch(editDeliveryRequest(id));
   }
 
   function handlePage(action) {
@@ -115,7 +124,7 @@ export default function Deliveries() {
                     Visualizar
                   </button>
 
-                  <button type="button">
+                  <button type="button" onClick={() => handleEdit(delivery.id)}>
                     <MdCreate size={24} color="#4D85EE" />
                     Editar
                   </button>

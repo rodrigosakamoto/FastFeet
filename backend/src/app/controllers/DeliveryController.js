@@ -59,6 +59,53 @@ class DeliveryController {
     return res.json(deliveries);
   }
 
+  // Lista by id
+
+  async show(req, res) {
+    const { deliveryId } = req.params;
+
+    const delivery = await Delivery.findOne({
+      where: {
+        id: deliveryId,
+      },
+      attributes: ['id', 'product', 'start_date', 'end_date', 'canceled_at'],
+      include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: [
+            'name',
+            'street',
+            'number',
+            'complement',
+            'state',
+            'city',
+            'zipcode',
+          ],
+        },
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: ['id', 'name', 'email'],
+          include: [
+            {
+              model: File,
+              as: 'avatar',
+              attributes: ['id', 'path', 'url'],
+            },
+          ],
+        },
+        {
+          model: File,
+          as: 'signature',
+          attributes: ['id', 'path', 'url'],
+        },
+      ],
+    });
+
+    return res.json(delivery);
+  }
+
   // Cadastro de entregas
   async store(req, res) {
     // Validação dos dados de entrada

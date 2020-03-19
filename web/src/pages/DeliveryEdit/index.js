@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input } from '@rocketseat/unform';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { MdKeyboardArrowLeft, MdDone } from 'react-icons/md';
 import { Container, Header, Content, Select } from './styles';
@@ -8,10 +8,13 @@ import { Container, Header, Content, Select } from './styles';
 import history from '~/services/history';
 import api from '~/services/api';
 
-import { addDeliveryRequest } from '~/store/modules/delivery/actions';
+import { updateDeliveryRequest } from '~/store/modules/delivery/actions';
 
-export default function DeliveryAdd() {
+export default function DeliveryEdit() {
   const dispatch = useDispatch();
+  const delivery = useSelector(state => state.delivery.delivery);
+  const recipientName = useSelector(state => state.delivery.recipient);
+  const deliverymanName = useSelector(state => state.delivery.deliveryman);
 
   const [recipients, setRecipients] = useState([]);
   const [recipient, setRecipient] = useState('');
@@ -49,14 +52,21 @@ export default function DeliveryAdd() {
   }, []);
 
   async function handleSubmit({ product }) {
-    dispatch(addDeliveryRequest(deliveryman.value, recipient.value, product));
+    dispatch(
+      updateDeliveryRequest(
+        delivery.id,
+        deliveryman.value,
+        recipient.value,
+        product
+      )
+    );
   }
 
   return (
     <Container>
-      <Form onSubmit={handleSubmit}>
+      <Form initialData={delivery} onSubmit={handleSubmit}>
         <Header>
-          <p>Cadastro de encomendas</p>
+          <p>Edição de encomendas</p>
           <div>
             <button
               type="button"
@@ -81,6 +91,8 @@ export default function DeliveryAdd() {
                 loadOptions={loadRecipients}
                 onChange={setRecipient}
                 defaultOptions={recipients}
+                defaultInputValue={recipientName}
+                placeholder={recipientName}
               />
             </div>
             <div>
@@ -90,6 +102,8 @@ export default function DeliveryAdd() {
                 loadOptions={loadDeliverymans}
                 onChange={setDeliveryman}
                 defaultOptions={deliverymans}
+                defaultInputValue={deliverymanName}
+                placeholder={deliverymanName}
               />
             </div>
           </div>
