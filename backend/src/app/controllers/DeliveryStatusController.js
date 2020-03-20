@@ -65,6 +65,7 @@ class DeliveryStatusController {
         .status(400)
         .json({ error: 'you can only make 5 deliveries a day' });
     }
+
     const updateDelivery = await delivery.update({
       start_date: new Date(),
     });

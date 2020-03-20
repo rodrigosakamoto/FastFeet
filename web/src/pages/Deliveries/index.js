@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { Form, Input } from '@rocketseat/unform';
 import {
@@ -8,8 +8,16 @@ import {
   MdCreate,
   MdDeleteForever,
 } from 'react-icons/md';
+import { formatDateWithDate } from '~/utils/FormatDate';
 
-import { Container, PageActions, List, Pagination } from './styles';
+import {
+  Container,
+  PageActions,
+  List,
+  Pagination,
+  ModalView,
+  ModalBox,
+} from './styles';
 
 import DeliveryModal from '~/components/DeliveryModal';
 import DeliveryStatus from '~/components/DeliveryStatus';
@@ -27,6 +35,18 @@ export default function Deliveries() {
   const [deliveries, setDeliveries] = useState([]);
   const [product, setProduct] = useState([]);
   const [page, setPage] = useState(1);
+  const [visible, setVisible] = useState(false);
+  const [item, setItem] = useState([]);
+  const [recipient, setRecipient] = useState([]);
+
+  const formattedStartDate = useMemo(
+    () => item.start_date && formatDateWithDate(String(item.start_date)),
+    [item.start_date]
+  );
+  const formattedEndDate = useMemo(
+    () => item.end_date && formatDateWithDate(String(item.end_date)),
+    [item.end_date]
+  );
 
   useEffect(() => {
     async function loadDeliveries() {
@@ -36,6 +56,7 @@ export default function Deliveries() {
           page,
         },
       });
+
       setDeliveries(response.data);
     }
     loadDeliveries();
@@ -60,6 +81,18 @@ export default function Deliveries() {
 
   function handlePage(action) {
     setPage(action === 'next' ? page + 1 : page - 1);
+  }
+
+  async function handleModal(id) {
+    const response = await api.get(`/deliveries/${id}`);
+
+    setRecipient(response.data.recipient);
+    setItem(response.data);
+    setVisible(!visible);
+  }
+
+  function handleClose() {
+    setVisible(!visible);
   }
 
   return (
@@ -119,7 +152,10 @@ export default function Deliveries() {
               </td>
               <td>
                 <DeliveryModal>
-                  <button type="button">
+                  <button
+                    type="button"
+                    onClick={() => handleModal(delivery.id)}
+                  >
                     <MdVisibility size={24} color="#8E5BE8" />
                     Visualizar
                   </button>
@@ -159,6 +195,36 @@ export default function Deliveries() {
           Próximo
         </button>
       </Pagination>
+      <ModalView visible={visible}>
+        <ModalBox>
+          <button type="button" onClick={handleClose}>
+            X
+          </button>
+          <h2>Informações da encomenda</h2>
+          <p>
+            {recipient.street}
+            <span>, </span> {recipient.number}
+          </p>
+          <p>
+            {recipient.city}
+            <span> - </span>
+            {recipient.state}
+          </p>
+          <p>{recipient.zipcode}</p>
+          <hr />
+          <h2>Datas</h2>
+          <p>
+            Retirada:
+            {formattedStartDate || 'Ainda não retirado'}
+          </p>
+          <p>Entrega: {formattedEndDate || 'Ainda não entregue'}</p>
+          {item.signature ? (
+            <img src={item.signature.url} alt="Assinatura" />
+          ) : (
+            <p>Nenhuma assinatura registrada</p>
+          )}
+        </ModalBox>
+      </ModalView>
     </Container>
   );
 }

@@ -142,3 +142,62 @@ export const Pagination = styled.div`
     }
   }
 `;
+
+export const ModalView = styled.div`
+  visibility: ${props => (props.visible ? 'block' : 'hidden')};
+  background: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  display: flex;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ModalBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+  border-radius: 4px;
+  width: 500px;
+  max-width: 500px;
+  background: #fff;
+  button {
+    border: 0;
+    background: #7d40e7;
+    border-radius: 50%;
+    padding: 5px;
+    align-self: flex-end;
+    margin-top: -40px;
+    font-size: 16px;
+    width: 35px;
+    border: 3px solid #fff;
+    font-weight: bold;
+    height: 35px;
+    color: #fff;
+  }
+  p {
+    font-size: 16px;
+    color: #666;
+    line-height: 26px;
+  }
+  h2 {
+    font-size: 14px;
+    color: #444;
+    font-weight: bold;
+  }
+  hr {
+    border: 0;
+    border-bottom: 1px solid #eee;
+    margin: 10px 0;
+  }
+  img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+  }
+`;
