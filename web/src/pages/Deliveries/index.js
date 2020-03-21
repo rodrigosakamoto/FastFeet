@@ -13,7 +13,7 @@ import { formatDateWithDate } from '~/utils/FormatDate';
 
 import { Container, List, Pagination, ModalView, ModalBox } from './styles';
 
-import PageActions from '~/components/PageActions';
+import ListHeader from '~/components/ListHeader';
 import Modal from '~/components/Modal';
 import DeliveryStatus from '~/components/DeliveryStatus';
 
@@ -95,7 +95,7 @@ export default function Deliveries() {
       <header>
         <p>Gerenciando encomendas</p>
       </header>
-      <PageActions>
+      <ListHeader>
         <Form onSubmit={handleSubmit}>
           <MdSearch size={24} color="#999" />
 
@@ -105,7 +105,7 @@ export default function Deliveries() {
           <MdAdd size={24} color="#fff" />
           CADASTRAR
         </button>
-      </PageActions>
+      </ListHeader>
       <List>
         <thead>
           <tr>

@@ -3,7 +3,9 @@ import { Form, Input } from '@rocketseat/unform';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { MdKeyboardArrowLeft, MdDone } from 'react-icons/md';
-import { Container, Header, Content, Select } from './styles';
+import { Container, Content, Select } from './styles';
+
+import EditHeader from '~/components/EditHeader';
 
 import history from '~/services/history';
 import api from '~/services/api';
@@ -65,7 +67,7 @@ export default function DeliveryEdit() {
   return (
     <Container>
       <Form initialData={delivery} onSubmit={handleSubmit}>
-        <Header>
+        <EditHeader>
           <p>Edição de encomendas</p>
           <div>
             <button
@@ -81,7 +83,7 @@ export default function DeliveryEdit() {
               SALVAR
             </button>
           </div>
-        </Header>
+        </EditHeader>
         <Content>
           <div className="container">
             <div>

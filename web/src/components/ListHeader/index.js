@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { darken } from 'polished';
 
-const PageActions = styled.div`
+const ListHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -54,4 +54,4 @@ const PageActions = styled.div`
   }
 `;
 
-export default PageActions;
+export default ListHeader;

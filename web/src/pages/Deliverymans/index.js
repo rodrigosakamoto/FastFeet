@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Form, Input } from '@rocketseat/unform';
 import { MdAdd, MdSearch, MdCreate, MdDeleteForever } from 'react-icons/md';
 
 import { Container, List } from './styles';
 
 import Modal from '~/components/Modal';
-import PageActions from '~/components/PageActions';
+import ListHeader from '~/components/ListHeader';
 
 import history from '~/services/history';
 import api from '~/services/api';
 
+import { removeDeliverymanRequest } from '~/store/modules/deliveryman/actions';
+
 export default function Deliverymans() {
+  const dispatch = useDispatch();
   const [deliverymans, setDeliverymans] = useState([]);
   const [page, setPage] = useState(1);
   const [deliverymansName, setDeliverymansName] = useState([]);
@@ -34,12 +38,19 @@ export default function Deliverymans() {
     setPage(1);
   }
 
+  function handleDelete(id) {
+    const resp = window.confirm('Deseja excluir a encomenda?');
+    if (resp === true) {
+      dispatch(removeDeliverymanRequest(id));
+    }
+  }
+
   return (
     <Container>
       <header>
         <p>Gerenciando entregadores</p>
       </header>
-      <PageActions>
+      <ListHeader>
         <Form onSubmit={handleSubmit}>
           <MdSearch size={24} color="#999" />
 
@@ -49,7 +60,7 @@ export default function Deliverymans() {
           <MdAdd size={24} color="#fff" />
           CADASTRAR
         </button>
-      </PageActions>
+      </ListHeader>
       <List>
         <thead>
           <tr>
@@ -80,11 +91,17 @@ export default function Deliverymans() {
               <td>{deliveryman.email}</td>
               <td>
                 <Modal>
-                  <button type="button">
+                  <button
+                    type="button"
+                    onClick={() => history.push('/deliverymans/edit')}
+                  >
                     <MdCreate size={24} color="#4D85EE" />
                     Editar
                   </button>
-                  <button type="button">
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(deliveryman.id)}
+                  >
                     <MdDeleteForever size={24} color="#DE3B3B" />
                     Excluir
                   </button>
