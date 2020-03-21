@@ -90,34 +90,26 @@ class DeliverymanController {
 
   // Lista entregadores
   async index(req, res) {
-    const { q } = req.query;
+    const { q = '', page = 1 } = req.query;
 
-    const deliverymans = q
-      ? await Deliveryman.findAll({
-          attributes: ['id', 'name', 'email', 'avatar_id'],
-          include: [
-            {
-              model: File,
-              as: 'avatar',
-              attributes: ['name', 'path', 'url'],
-            },
-          ],
-          where: {
-            name: {
-              [Op.iLike]: q,
-            },
-          },
-        })
-      : await Deliveryman.findAll({
-          attributes: ['id', 'name', 'email', 'avatar_id'],
-          include: [
-            {
-              model: File,
-              as: 'avatar',
-              attributes: ['name', 'path', 'url'],
-            },
-          ],
-        });
+    const deliverymans = await Deliveryman.findAll({
+      attributes: ['id', 'name', 'email', 'avatar_id'],
+      include: [
+        {
+          model: File,
+          as: 'avatar',
+          attributes: ['name', 'path', 'url'],
+        },
+      ],
+      where: {
+        name: {
+          [Op.iLike]: `%${q}%`,
+        },
+      },
+      limit: 6,
+      offset: (page - 1) * 6,
+    });
+
     return res.json(deliverymans);
   }
 }

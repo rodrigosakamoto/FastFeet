@@ -8,18 +8,13 @@ import {
   MdCreate,
   MdDeleteForever,
 } from 'react-icons/md';
+
 import { formatDateWithDate } from '~/utils/FormatDate';
 
-import {
-  Container,
-  PageActions,
-  List,
-  Pagination,
-  ModalView,
-  ModalBox,
-} from './styles';
+import { Container, List, Pagination, ModalView, ModalBox } from './styles';
 
-import DeliveryModal from '~/components/DeliveryModal';
+import PageActions from '~/components/PageActions';
+import Modal from '~/components/Modal';
 import DeliveryStatus from '~/components/DeliveryStatus';
 
 import api from '../../services/api';
@@ -151,7 +146,7 @@ export default function Deliveries() {
                 </span>
               </td>
               <td>
-                <DeliveryModal>
+                <Modal>
                   <button
                     type="button"
                     onClick={() => handleModal(delivery.id)}
@@ -172,7 +167,7 @@ export default function Deliveries() {
                     <MdDeleteForever size={24} color="#DE3B3B" />
                     Excluir
                   </button>
-                </DeliveryModal>
+                </Modal>
               </td>
             </tr>
           ))}
@@ -213,10 +208,7 @@ export default function Deliveries() {
           <p>{recipient.zipcode}</p>
           <hr />
           <h2>Datas</h2>
-          <p>
-            Retirada:
-            {formattedStartDate || 'Ainda não retirado'}
-          </p>
+          <p>Retirada: {formattedStartDate || 'Ainda não retirado'}</p>
           <p>Entrega: {formattedEndDate || 'Ainda não entregue'}</p>
           {item.signature ? (
             <img src={item.signature.url} alt="Assinatura" />
