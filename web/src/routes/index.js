@@ -5,6 +5,8 @@ import Route from './Route';
 import SignIn from '../pages/SignIn';
 
 import Recipients from '../pages/Recipients';
+import RecipientEdit from '../pages/Recipients/RecipientEdit';
+import RecipientAdd from '../pages/Recipients/RecipientAdd';
 
 import Deliverymans from '../pages/Deliverymans';
 import DeliverymanEdit from '../pages/Deliverymans/DeliverymanEdit';
@@ -23,7 +25,6 @@ export default function Routes() {
       <Route path="/deliveries/add" exact component={DeliveryAdd} isPrivate />
       <Route path="/deliveries/edit" exact component={DeliveryEdit} isPrivate />
 
-      <Route path="/recipients" component={Recipients} isPrivate />
       <Route path="/deliverymans" exact component={Deliverymans} isPrivate />
       <Route
         path="/deliverymans/edit"
@@ -37,6 +38,10 @@ export default function Routes() {
         component={DeliverymanAdd}
         isPrivate
       />
+
+      <Route path="/recipients" exact component={Recipients} isPrivate />
+      <Route path="/recipients/edit" component={RecipientEdit} isPrivate />
+      <Route path="/recipients/add" component={RecipientAdd} isPrivate />
     </Switch>
   );
 }

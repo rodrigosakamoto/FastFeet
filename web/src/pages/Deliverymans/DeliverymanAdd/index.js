@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input } from '@rocketseat/unform';
 import { useDispatch } from 'react-redux';
-
+import * as Yup from 'yup';
 import { MdDone, MdKeyboardArrowLeft } from 'react-icons/md';
 import { Container, Content } from './styles';
 
@@ -12,6 +12,13 @@ import AvatarInput from '../DeliverymanEdit/AvatarInput';
 
 import history from '~/services/history';
 
+const schema = Yup.object().shape({
+  name: Yup.string().required('O nome é obrigatório'),
+  email: Yup.string()
+    .email('Insira um e-mail válido')
+    .required('O e-mail é obrigatório'),
+});
+
 export default function DeliverymanAdd() {
   const dispatch = useDispatch();
 
@@ -21,7 +28,7 @@ export default function DeliverymanAdd() {
 
   return (
     <Container>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} schema={schema}>
         <EditHeader>
           <p>Cadastro de entregadores</p>
           <div>

@@ -78,6 +78,12 @@ export const Content = styled.div`
     color: #999;
     font-size: 16px;
   }
+  span {
+    color: #fb6f91;
+    align-self: flex-start;
+    font-weight: bold;
+    margin: 15px 0 0 0;
+  }
 `;
 
 export const Select = styled(AsyncSelect)`

@@ -10,7 +10,6 @@ export const Content = styled.div`
   border-radius: 4px;
   display: flex;
   flex-direction: column;
-
   p {
     font-size: 14px;
     font-weight: bold;
@@ -19,6 +18,7 @@ export const Content = styled.div`
   }
 
   input {
+    width: 100%;
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -29,6 +29,22 @@ export const Content = styled.div`
     font-size: 16px;
   }
 
+  div.line3 {
+    display: grid;
+    grid-gap: 16px;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  div.line2 {
+    display: grid;
+    grid-gap: 16px;
+    grid-template-columns: 4fr 1fr 1fr;
+  }
+
+  div.item {
+    display: flex;
+    flex-direction: column;
+  }
   span {
     color: #fb6f91;
     align-self: flex-start;

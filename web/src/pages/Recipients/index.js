@@ -12,9 +12,9 @@ import api from '~/services/api';
 import history from '~/services/history';
 
 import {
-  removeDeliverymanRequest,
-  editDeliverymanRequest,
-} from '~/store/modules/deliveryman/actions';
+  removeRecipientRequest,
+  editRecipientRequest,
+} from '~/store/modules/recipient/actions';
 
 export default function Recipients() {
   const dispatch = useDispatch();
@@ -44,12 +44,12 @@ export default function Recipients() {
   function handleDelete(id) {
     const resp = window.confirm('Deseja excluir o destinatário?');
     if (resp === true) {
-      dispatch(removeDeliverymanRequest(id));
+      dispatch(removeRecipientRequest(id));
     }
   }
 
   function handleEdit(id) {
-    dispatch(editDeliverymanRequest(id));
+    dispatch(editRecipientRequest(id));
   }
 
   return (
@@ -63,7 +63,7 @@ export default function Recipients() {
 
           <Input name="destinatario" placeholder="Buscar por destinatário" />
         </Form>
-        <button type="button" onClick={() => history.push('deliverymans/add')}>
+        <button type="button" onClick={() => history.push('recipients/add')}>
           <MdAdd size={24} color="#fff" />
           CADASTRAR
         </button>
@@ -83,8 +83,10 @@ export default function Recipients() {
               <td>#{recipient.id}</td>
               <td>{recipient.name}</td>
               <td>
-                {recipient.street} ,{recipient.number},{recipient.city} -
-                {recipient.state}
+                <p>
+                  {recipient.street}
+                  {recipient.number}, {recipient.city} - {recipient.state}
+                </p>
               </td>
               <td>
                 <Modal>
