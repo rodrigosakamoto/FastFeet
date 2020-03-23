@@ -60,7 +60,6 @@ class DeliveryController {
   }
 
   // Lista by id
-
   async show(req, res) {
     const { deliveryId } = req.params;
 

@@ -8,10 +8,13 @@ import { Container, List } from './styles';
 import Modal from '~/components/Modal';
 import ListHeader from '~/components/ListHeader';
 
-import history from '~/services/history';
 import api from '~/services/api';
+import history from '~/services/history';
 
-import { removeDeliverymanRequest } from '~/store/modules/deliveryman/actions';
+import {
+  removeDeliverymanRequest,
+  editDeliverymanRequest,
+} from '~/store/modules/deliveryman/actions';
 
 export default function Deliverymans() {
   const dispatch = useDispatch();
@@ -45,6 +48,10 @@ export default function Deliverymans() {
     }
   }
 
+  function handleEdit(id) {
+    dispatch(editDeliverymanRequest(id));
+  }
+
   return (
     <Container>
       <header>
@@ -56,7 +63,7 @@ export default function Deliverymans() {
 
           <Input name="entregador" placeholder="Buscar por entregadores" />
         </Form>
-        <button type="button">
+        <button type="button" onClick={() => history.push('deliverymans/add')}>
           <MdAdd size={24} color="#fff" />
           CADASTRAR
         </button>
@@ -93,7 +100,7 @@ export default function Deliverymans() {
                 <Modal>
                   <button
                     type="button"
-                    onClick={() => history.push('/deliverymans/edit')}
+                    onClick={() => handleEdit(deliveryman.id)}
                   >
                     <MdCreate size={24} color="#4D85EE" />
                     Editar

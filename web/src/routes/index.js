@@ -8,6 +8,7 @@ import Recipients from '../pages/Recipients';
 
 import Deliverymans from '../pages/Deliverymans';
 import DeliverymanEdit from '../pages/Deliverymans/DeliverymanEdit';
+import DeliverymanAdd from '../pages/Deliverymans/DeliverymanAdd';
 
 import Deliveries from '../pages/Deliveries';
 import DeliveryAdd from '../pages/Deliveries/DeliveryAdd';
@@ -28,6 +29,12 @@ export default function Routes() {
         path="/deliverymans/edit"
         exact
         component={DeliverymanEdit}
+        isPrivate
+      />
+      <Route
+        path="/deliverymans/add"
+        exact
+        component={DeliverymanAdd}
         isPrivate
       />
     </Switch>

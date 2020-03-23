@@ -1,36 +1,29 @@
 import React from 'react';
 import { Form, Input } from '@rocketseat/unform';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { MdDone, MdKeyboardArrowLeft } from 'react-icons/md';
 import { Container, Content } from './styles';
 
-import { updateDeliverymanRequest } from '~/store/modules/deliveryman/actions';
+import { addDeliverymanRequest } from '~/store/modules/deliveryman/actions';
 
 import EditHeader from '~/components/EditHeader';
-import AvatarInput from './AvatarInput';
+import AvatarInput from '../DeliverymanEdit/AvatarInput';
 
 import history from '~/services/history';
 
-export default function DeliverymanEdit() {
+export default function DeliverymanAdd() {
   const dispatch = useDispatch();
-  const deliveryman = useSelector(state => state.deliveryman.deliveryman);
 
-  function handleSubmit({ name, email, avatar_id }) {
-    const data = {
-      id: deliveryman.id,
-      name,
-      email,
-      avatar_id,
-    };
-    dispatch(updateDeliverymanRequest(data));
+  function handleSubmit(data) {
+    dispatch(addDeliverymanRequest(data));
   }
 
   return (
     <Container>
-      <Form initialData={deliveryman} onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <EditHeader>
-          <p>Edição de entregadores</p>
+          <p>Cadastro de entregadores</p>
           <div>
             <button
               type="button"

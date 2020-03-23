@@ -5,6 +5,27 @@ import Deliveryman from '../models/Deliveryman';
 import File from '../models/File';
 
 class DeliverymanController {
+  // Lista by id
+  async show(req, res) {
+    const { id } = req.params;
+
+    const deliveryman = await Deliveryman.findOne({
+      where: {
+        id,
+      },
+      attributes: ['id', 'name', 'email', 'avatar_id'],
+      include: [
+        {
+          model: File,
+          as: 'avatar',
+          attributes: ['name', 'path', 'url'],
+        },
+      ],
+    });
+
+    return res.json(deliveryman);
+  }
+
   // Deletar entregador
   async delete(req, res) {
     const { id } = req.params;
