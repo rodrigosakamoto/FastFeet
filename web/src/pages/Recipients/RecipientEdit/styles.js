@@ -38,7 +38,7 @@ export const Content = styled.div`
   div.line2 {
     display: grid;
     grid-gap: 16px;
-    grid-template-columns: 4fr 1fr 1fr;
+    grid-template-columns: 3fr 1fr 1fr;
   }
 
   div.item {

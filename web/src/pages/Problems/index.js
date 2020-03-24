@@ -1,55 +1,61 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Form, Input } from '@rocketseat/unform';
-import { MdAdd, MdSearch, MdCreate, MdDeleteForever } from 'react-icons/md';
+import {
+  MdCreate,
+  MdDeleteForever,
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+} from 'react-icons/md';
 
-import { Container, List } from './styles';
+import { Container, List, ModalBox, ModalView, Pagination } from './styles';
 
 import Modal from '~/components/Modal';
-import ListHeader from '~/components/ListHeader';
 
 import api from '~/services/api';
-import history from '~/services/history';
 
-import {
-  removeRecipientRequest,
-  editRecipientRequest,
-} from '~/store/modules/recipient/actions';
+import { removeProblemRequest } from '~/store/modules/problem/actions';
 
-export default function Recipients() {
+export default function Problems() {
   const dispatch = useDispatch();
-  const [recipients, setRecipients] = useState([]);
+  const [problems, setProblems] = useState([]);
   const [page, setPage] = useState(1);
-  const [recipientsName, setRecipientsName] = useState([]);
+  const [visible, setVisible] = useState(false);
+  const [item, setItem] = useState([]);
 
   useEffect(() => {
-    async function loadRecipients() {
-      const response = await api.get('/recipients', {
+    async function loadProblems() {
+      const response = await api.get('/delivery/problems', {
         params: {
-          q: recipientsName,
           page,
         },
       });
 
-      setRecipients(response.data);
+      setProblems(response.data);
     }
-    loadRecipients();
-  }, [recipientsName, recipients, page]);
-
-  function handleSubmit({ destinatario }) {
-    setRecipientsName(destinatario);
-    setPage(1);
-  }
+    loadProblems();
+  }, [problems, page]);
 
   function handleDelete(id) {
-    const resp = window.confirm('Deseja excluir o destinatário?');
+    const resp = window.confirm('Deseja excluir o problema?');
     if (resp === true) {
-      dispatch(removeRecipientRequest(id));
+      dispatch(removeProblemRequest(id));
     }
   }
 
-  function handleEdit(id) {
-    dispatch(editRecipientRequest(id));
+  async function handleModal(id) {
+    const response = await api.get(`/delivery/${id}/problems`);
+
+    setItem(response.data);
+    console.tron.log(response.data);
+    setVisible(!visible);
+  }
+
+  function handleClose() {
+    setVisible(!visible);
+  }
+
+  function handlePage(action) {
+    setPage(action === 'next' ? page + 1 : page - 1);
   }
 
   return (
@@ -57,17 +63,6 @@ export default function Recipients() {
       <header>
         <p>Problemas na Entrega</p>
       </header>
-      <ListHeader>
-        <Form onSubmit={handleSubmit}>
-          <MdSearch size={24} color="#999" />
-
-          <Input name="destinatario" placeholder="Buscar por destinatário" />
-        </Form>
-        <button type="button" onClick={() => history.push('recipients/add')}>
-          <MdAdd size={24} color="#fff" />
-          CADASTRAR
-        </button>
-      </ListHeader>
       <List>
         <thead>
           <tr>
@@ -77,22 +72,19 @@ export default function Recipients() {
           </tr>
         </thead>
         <tbody>
-          {recipients.map(recipient => (
-            <tr key={recipient.id}>
-              <td>#{recipient.id}</td>
-              <td>{recipient.name}</td>
+          {problems.map(problem => (
+            <tr key={problem.id}>
+              <td>#{problem.id}</td>
+              <td>{problem.description}</td>
               <td>
                 <Modal>
-                  <button
-                    type="button"
-                    onClick={() => handleEdit(recipient.id)}
-                  >
+                  <button type="button" onClick={() => handleModal(problem.id)}>
                     <MdCreate size={24} color="#4D85EE" />
                     Visualizar
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleDelete(recipient.id)}
+                    onClick={() => handleDelete(problem.id)}
                   >
                     <MdDeleteForever size={24} color="#DE3B3B" />
                     Cancelar encomenda
@@ -103,6 +95,35 @@ export default function Recipients() {
           ))}
         </tbody>
       </List>
+      <Pagination>
+        <button
+          type="button"
+          disabled={page < 2}
+          onClick={() => handlePage('back')}
+        >
+          <MdKeyboardArrowLeft size={24} color="#fff" />
+        </button>
+        <span>Página {page}</span>
+        <button
+          type="button"
+          disabled={problems.length < 6}
+          onClick={() => handlePage('next')}
+        >
+          <MdKeyboardArrowRight size={24} color="#fff" />
+        </button>
+      </Pagination>
+
+      <ModalView visible={visible}>
+        <ModalBox>
+          <button type="button" onClick={handleClose}>
+            X
+          </button>
+          <h2>VISUALIZAR PROBLEMA</h2>
+          {item.map(i => (
+            <p>{i.description}</p>
+          ))}
+        </ModalBox>
+      </ModalView>
     </Container>
   );
 }

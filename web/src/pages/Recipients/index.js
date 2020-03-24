@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Form, Input } from '@rocketseat/unform';
-import { MdAdd, MdSearch, MdCreate, MdDeleteForever } from 'react-icons/md';
+import {
+  MdAdd,
+  MdSearch,
+  MdCreate,
+  MdDeleteForever,
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+} from 'react-icons/md';
 
-import { Container, List } from './styles';
+import { Container, List, Pagination } from './styles';
 
 import Modal from '~/components/Modal';
 import ListHeader from '~/components/ListHeader';
@@ -50,6 +57,10 @@ export default function Recipients() {
 
   function handleEdit(id) {
     dispatch(editRecipientRequest(id));
+  }
+
+  function handlePage(action) {
+    setPage(action === 'next' ? page + 1 : page - 1);
   }
 
   return (
@@ -110,6 +121,23 @@ export default function Recipients() {
           ))}
         </tbody>
       </List>
+      <Pagination>
+        <button
+          type="button"
+          disabled={page < 2}
+          onClick={() => handlePage('back')}
+        >
+          <MdKeyboardArrowLeft size={24} color="#fff" />
+        </button>
+        <span>Página {page}</span>
+        <button
+          type="button"
+          disabled={recipients.length < 6}
+          onClick={() => handlePage('next')}
+        >
+          <MdKeyboardArrowRight size={24} color="#fff" />
+        </button>
+      </Pagination>
     </Container>
   );
 }

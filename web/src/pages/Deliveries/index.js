@@ -7,6 +7,8 @@ import {
   MdVisibility,
   MdCreate,
   MdDeleteForever,
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
 } from 'react-icons/md';
 
 import { formatDateWithDate } from '~/utils/FormatDate';
@@ -179,7 +181,7 @@ export default function Deliveries() {
           disabled={page < 2}
           onClick={() => handlePage('back')}
         >
-          Anterior
+          <MdKeyboardArrowLeft size={24} color="#fff" />
         </button>
         <span>Página {page}</span>
         <button
@@ -187,7 +189,7 @@ export default function Deliveries() {
           disabled={deliveries.length < 6}
           onClick={() => handlePage('next')}
         >
-          Próximo
+          <MdKeyboardArrowRight size={24} color="#fff" />
         </button>
       </Pagination>
       <ModalView visible={visible}>

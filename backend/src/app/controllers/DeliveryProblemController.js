@@ -10,6 +10,7 @@ import Queue from '../../lib/Queue';
 
 class DeliveryProblemController {
   async index(req, res) {
+    const { page = 1 } = req.query;
     const deliveryProblems = await DeliveryProblem.findAll({
       include: [
         {
@@ -18,6 +19,8 @@ class DeliveryProblemController {
           attributes: ['product', 'deliveryman_id', 'recipient_id'],
         },
       ],
+      limit: 6,
+      offset: (page - 1) * 6,
     });
 
     return res.json(deliveryProblems);
@@ -27,21 +30,14 @@ class DeliveryProblemController {
   async show(req, res) {
     const { deliveryId } = req.params;
 
-    const delivery = await Delivery.findByPk(deliveryId);
+    const delivery = await DeliveryProblem.findByPk(deliveryId);
 
     if (!delivery) {
       return res.status(400).json({ error: 'Delivery does not exists' });
     }
 
     const deliveryProblems = await DeliveryProblem.findAll({
-      where: { delivery_id: deliveryId },
-      include: [
-        {
-          model: Delivery,
-          as: 'delivery',
-          attributes: ['product', 'deliveryman_id', 'recipient_id'],
-        },
-      ],
+      where: { id: deliveryId },
     });
 
     return res.json(deliveryProblems);
@@ -100,6 +96,8 @@ class DeliveryProblemController {
     if (delivery.end_date !== null && delivery.signature_id !== null) {
       return res.status(400).json('This delivery has been completed');
     }
+
+    await DeliveryProblem.destroy({ where: { id: problemId } });
 
     delivery.update(
       {
