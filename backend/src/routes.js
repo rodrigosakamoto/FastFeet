@@ -39,7 +39,8 @@ routes.put(
 );
 
 // Problemas
-routes.get('/delivery/:deliveryId/problems', DeliveryProblemsController.index);
+routes.get('/delivery/problems', DeliveryProblemsController.index);
+routes.get('/delivery/:deliveryId/problems', DeliveryProblemsController.show);
 routes.post('/delivery/:deliveryId/problems', DeliveryProblemsController.store);
 routes.delete(
   '/problem/:problemId/cancel-delivery',

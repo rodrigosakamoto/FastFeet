@@ -4,6 +4,8 @@ import Route from './Route';
 
 import SignIn from '../pages/SignIn';
 
+import Problems from '../pages/Problems';
+
 import Recipients from '../pages/Recipients';
 import RecipientEdit from '../pages/Recipients/RecipientEdit';
 import RecipientAdd from '../pages/Recipients/RecipientAdd';
@@ -42,6 +44,8 @@ export default function Routes() {
       <Route path="/recipients" exact component={Recipients} isPrivate />
       <Route path="/recipients/edit" component={RecipientEdit} isPrivate />
       <Route path="/recipients/add" component={RecipientAdd} isPrivate />
+
+      <Route path="/problems" exact component={Problems} isPrivate />
     </Switch>
   );
 }

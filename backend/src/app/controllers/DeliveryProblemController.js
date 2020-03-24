@@ -10,6 +10,21 @@ import Queue from '../../lib/Queue';
 
 class DeliveryProblemController {
   async index(req, res) {
+    const deliveryProblems = await DeliveryProblem.findAll({
+      include: [
+        {
+          model: Delivery,
+          as: 'delivery',
+          attributes: ['product', 'deliveryman_id', 'recipient_id'],
+        },
+      ],
+    });
+
+    return res.json(deliveryProblems);
+  }
+
+  // Lista by id
+  async show(req, res) {
     const { deliveryId } = req.params;
 
     const delivery = await Delivery.findByPk(deliveryId);
