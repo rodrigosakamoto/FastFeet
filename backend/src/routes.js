@@ -47,6 +47,8 @@ routes.delete(
   DeliveryProblemsController.delete
 );
 
+routes.get('/deliverymans/:id', DeliverymanController.show);
+
 // Middleware de autenticação
 routes.use(authMiddleware);
 
@@ -59,7 +61,6 @@ routes.delete('/recipients/:id', RecipientController.delete);
 
 // Entregadores
 routes.get('/deliverymans', DeliverymanController.index);
-routes.get('/deliverymans/:id', DeliverymanController.show);
 routes.post('/deliverymans', DeliverymanController.store);
 routes.put('/deliverymans/:id', DeliverymanController.update);
 routes.delete('/deliverymans/:id', DeliverymanController.delete);
