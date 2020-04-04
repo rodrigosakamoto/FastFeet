@@ -1,5 +1,6 @@
 import Delivery from '../models/Delivery';
 import Deliveryman from '../models/Deliveryman';
+import Recipient from '../models/Recipient';
 
 class OpenDeliveriesController {
   async index(req, res) {
@@ -12,6 +13,21 @@ class OpenDeliveriesController {
     }
 
     const deliveries = await Delivery.findAll({
+      include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: [
+            'name',
+            'street',
+            'number',
+            'complement',
+            'state',
+            'city',
+            'zipcode',
+          ],
+        },
+      ],
       where: {
         deliveryman_id: deliverymanId,
         end_date: null,

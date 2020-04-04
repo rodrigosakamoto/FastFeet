@@ -2,6 +2,7 @@ import { Op } from 'sequelize';
 import Delivery from '../models/Delivery';
 import Deliveryman from '../models/Deliveryman';
 import File from '../models/File';
+import Recipient from '../models/Recipient';
 
 class DeliveredController {
   async index(req, res) {
@@ -14,6 +15,21 @@ class DeliveredController {
     }
 
     const deliveries = await Delivery.findAll({
+      include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: [
+            'name',
+            'street',
+            'number',
+            'complement',
+            'state',
+            'city',
+            'zipcode',
+          ],
+        },
+      ],
       where: {
         deliveryman_id: deliverymanId,
         end_date: { [Op.ne]: null },
