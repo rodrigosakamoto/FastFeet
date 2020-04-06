@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { StatusBar } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { format, parseISO } from 'date-fns';
 
@@ -38,7 +39,7 @@ import {
   ButtonText,
 } from './styles';
 
-export default function Dashboard() {
+export default function Dashboard({ navigation }) {
   const dispatch = useDispatch();
   const deliveryman = useSelector((state) => state.auth);
 
@@ -77,8 +78,17 @@ export default function Dashboard() {
     loadPending();
   }
 
+  function handleDetails(delivery) {
+    navigation.navigate('DeliveryDetails', {
+      delivery,
+    });
+    console.tron.log(delivery);
+  }
+
   return (
     <Container>
+      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+
       <Header>
         <HeaderInfo>
           <Avatar
@@ -146,7 +156,7 @@ export default function Dashboard() {
                 <InfoText>{item.recipient.city}</InfoText>
               </Info>
 
-              <SubmitButton>
+              <SubmitButton onPress={() => handleDetails(item.id)}>
                 <ButtonText>Ver detalhes</ButtonText>
               </SubmitButton>
             </DeliveriesInfo>
@@ -158,8 +168,5 @@ export default function Dashboard() {
 }
 
 Dashboard.navigationOptions = {
-  tabBarLabel: 'Entregas',
-  tabBarIcon: ({ tintColor }) => (
-    <Icon name="reorder" size={20} color={tintColor} />
-  ),
+  headerShown: false,
 };

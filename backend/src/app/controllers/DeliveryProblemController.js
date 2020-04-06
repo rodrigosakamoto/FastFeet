@@ -30,14 +30,8 @@ class DeliveryProblemController {
   async show(req, res) {
     const { deliveryId } = req.params;
 
-    const delivery = await DeliveryProblem.findByPk(deliveryId);
-
-    if (!delivery) {
-      return res.status(400).json({ error: 'Delivery does not exists' });
-    }
-
     const deliveryProblems = await DeliveryProblem.findAll({
-      where: { id: deliveryId },
+      where: { delivery_id: deliveryId },
     });
 
     return res.json(deliveryProblems);

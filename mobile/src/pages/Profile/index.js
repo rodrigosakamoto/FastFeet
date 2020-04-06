@@ -28,7 +28,7 @@ export default function Profile() {
         source={{
           uri: deliveryman.avatar
             ? deliveryman.avatar.url
-            : `https://api.adorable.io/avatar/50/${provider.name}.png`,
+            : `https://api.adorable.io/avatar/50/${deliveryman.name}.png`,
         }}
       />
 
