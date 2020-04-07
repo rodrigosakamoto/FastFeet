@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import PropTypes from 'prop-types';
 
 import api from '~/services/api';
 
@@ -13,7 +14,7 @@ import {
 } from './styles';
 
 export default function ReportProblems({ navigation }) {
-  const deliveryId = navigation.getParam('delivery');
+  const deliveryId = navigation.getParam('id');
 
   const [problem, setProblem] = useState('');
 
@@ -23,6 +24,7 @@ export default function ReportProblems({ navigation }) {
         description: problem,
       });
       Alert.alert('Problema cadastrado com sucesso');
+      navigation.navigate('DeliveryDetails');
     } catch (err) {
       Alert.alert('Erro ao informar problema');
     }
@@ -59,3 +61,10 @@ ReportProblems.navigationOptions = ({ navigation }) => ({
     </TouchableOpacity>
   ),
 });
+
+ReportProblems.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    getParam: PropTypes.func,
+  }).isRequired,
+};

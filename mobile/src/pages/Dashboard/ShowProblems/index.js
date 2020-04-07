@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import PropTypes from 'prop-types';
 import { format, parseISO } from 'date-fns';
 
 import api from '~/services/api';
@@ -18,7 +19,7 @@ import {
 
 export default function ShowProblems({ navigation }) {
   const [problems, setProblems] = useState([]);
-  const deliveryId = navigation.getParam('delivery');
+  const deliveryId = navigation.getParam('id');
 
   useEffect(() => {
     async function loadDeliveryProblems() {
@@ -26,9 +27,7 @@ export default function ShowProblems({ navigation }) {
       setProblems(response.data);
     }
     loadDeliveryProblems();
-  }, []);
-
-  console.tron.log(problems);
+  }, [deliveryId]);
 
   return (
     <Container>
@@ -67,3 +66,10 @@ ShowProblems.navigationOptions = ({ navigation }) => ({
     </TouchableOpacity>
   ),
 });
+
+ShowProblems.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    getParam: PropTypes.func,
+  }).isRequired,
+};

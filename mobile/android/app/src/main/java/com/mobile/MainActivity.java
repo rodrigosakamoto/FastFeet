@@ -15,7 +15,7 @@ public class MainActivity extends ReactActivity {
   protected String getMainComponentName() {
     return "mobile";
   }
-    @Override
+  @Override
   protected ReactActivityDelegate createReactActivityDelegate() {
     return new ReactActivityDelegate(this, getMainComponentName()) {
       @Override

@@ -5,6 +5,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import ConfirmDelivery from './pages/Dashboard/ConfirmDelivery';
 import ShowProblems from './pages/Dashboard/ShowProblems';
 import ReportProblems from './pages/Dashboard/ReportProblems';
 import DeliveryDetails from './pages/Dashboard/DeliveryDetails';
@@ -27,6 +28,7 @@ export default (signedIn = false) =>
                   DeliveryDetails,
                   ReportProblems,
                   ShowProblems,
+                  ConfirmDelivery,
                 },
                 {
                   defaultNavigationOptions: {

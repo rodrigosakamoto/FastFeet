@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { format, parseISO } from 'date-fns';
+import PropTypes from 'prop-types';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -46,12 +47,6 @@ export default function Dashboard({ navigation }) {
   const [status, setStatus] = useState(false);
   const [deliveries, setDeliveries] = useState([]);
 
-  async function loadPending() {
-    const response = await api.get(`deliverymans/${deliveryman.id}/status`);
-
-    setDeliveries(response.data);
-  }
-
   console.tron.log(deliveries);
 
   async function loadDelivered() {
@@ -60,9 +55,15 @@ export default function Dashboard({ navigation }) {
     setDeliveries(response.data);
   }
 
+  async function loadPending() {
+    const response = await api.get(`deliverymans/${deliveryman.id}/status`);
+
+    setDeliveries(response.data);
+  }
+
   useEffect(() => {
     loadPending();
-  }, []);
+  }, [deliveryman.id]);
 
   function handleLogout() {
     dispatch(signOut());
@@ -83,6 +84,18 @@ export default function Dashboard({ navigation }) {
       delivery,
     });
     console.tron.log(delivery);
+  }
+
+  async function handleWithdraw(delivery) {
+    try {
+      await api.put(`deliveries/status/${deliveryman.id}/${delivery}`);
+      Alert.alert('Sucesso', 'Encomenda retirada com sucesso');
+      navigation.navigate('DeliveryDetails', {
+        delivery,
+      });
+    } catch (err) {
+      Alert.alert('Falha', 'Não foi possivel retirar a encomenda');
+    }
   }
 
   return (
@@ -155,10 +168,15 @@ export default function Dashboard({ navigation }) {
                 <InfoTitle>Cidade</InfoTitle>
                 <InfoText>{item.recipient.city}</InfoText>
               </Info>
-
-              <SubmitButton onPress={() => handleDetails(item.id)}>
-                <ButtonText>Ver detalhes</ButtonText>
-              </SubmitButton>
+              {item.start_date ? (
+                <SubmitButton onPress={() => handleDetails(item.id)}>
+                  <ButtonText>Ver detalhes</ButtonText>
+                </SubmitButton>
+              ) : (
+                <SubmitButton onPress={() => handleWithdraw(item.id)}>
+                  <ButtonText>Retirar encomenda</ButtonText>
+                </SubmitButton>
+              )}
             </DeliveriesInfo>
           </DeliveriesContainer>
         )}
@@ -169,4 +187,10 @@ export default function Dashboard({ navigation }) {
 
 Dashboard.navigationOptions = {
   headerShown: false,
+};
+
+Dashboard.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
 };

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, StatusBar } from 'react-native';
+import { TouchableOpacity, StatusBar, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { format, parseISO } from 'date-fns';
+import PropTypes from 'prop-types';
 
 import api from '~/services/api';
 
@@ -43,16 +44,34 @@ export default function DeliveryDetails({ navigation }) {
     return 'Pendente';
   }
 
-  function handleProblems(delivery) {
-    navigation.navigate('ReportProblems', {
-      delivery,
+  function handleProblems(id) {
+    if (delivery.end_date) {
+      Alert.alert(
+        'Falha',
+        'Não é possível informar problemas em encomendas ja entregues'
+      );
+    } else {
+      navigation.navigate('ReportProblems', {
+        id,
+      });
+    }
+  }
+
+  function handleShow(id) {
+    navigation.navigate('ShowProblems', {
+      id,
     });
   }
 
-  function handleShow(delivery) {
-    navigation.navigate('ShowProblems', {
-      delivery,
-    });
+  function handleConfirm(id) {
+    if (delivery.end_date)
+      Alert.alert('Falha', 'Essa encomenda ja foi entregue');
+    if (!delivery.start_date)
+      Alert.alert('Falha', 'Essa encomenda ainda não foi retirada');
+    else
+      navigation.navigate('ConfirmDelivery', {
+        id,
+      });
   }
 
   return (
@@ -121,7 +140,7 @@ export default function DeliveryDetails({ navigation }) {
           <Icon name="info-outline" size={24} color="#E7BA40" />
           <ActionText>{'Visualizar\nProblema'}</ActionText>
         </ActionButton>
-        <ActionButton>
+        <ActionButton onPress={() => handleConfirm(deliveryId)}>
           <Icon name="alarm-on" size={24} color="#7D40E7" />
           <ActionText>{'Confirmar\n  Entrega'}</ActionText>
         </ActionButton>
@@ -145,3 +164,10 @@ DeliveryDetails.navigationOptions = ({ navigation }) => ({
     </TouchableOpacity>
   ),
 });
+
+DeliveryDetails.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    getParam: PropTypes.func,
+  }).isRequired,
+};
