@@ -95,8 +95,8 @@ export default function Recipients() {
               <td>{recipient.name}</td>
               <td>
                 <p>
-                  {recipient.street}
-                  {recipient.number}, {recipient.city} - {recipient.state}
+                  {recipient.street}, {recipient.number}, {recipient.city} -{' '}
+                  {recipient.state}
                 </p>
               </td>
               <td>

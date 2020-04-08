@@ -36,7 +36,6 @@ export const Content = styled.div`
     padding: 10px 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    color: #999;
     font-size: 16px;
   }
   span {

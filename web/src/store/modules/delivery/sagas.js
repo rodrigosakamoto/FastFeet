@@ -38,6 +38,7 @@ export function* addDelivery({ payload }) {
       product,
     });
     toast.success('Encomenda criada com sucesso');
+    history.push('/deliveries');
   } catch (err) {
     toast.error('Falha ao adicionar');
   }

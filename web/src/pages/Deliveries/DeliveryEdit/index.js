@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input } from '@rocketseat/unform';
 import { useDispatch, useSelector } from 'react-redux';
-import * as Yup from 'yup';
 import { MdKeyboardArrowLeft, MdDone } from 'react-icons/md';
 import { Container, Content, Select } from './styles';
 
@@ -11,12 +10,6 @@ import history from '~/services/history';
 import api from '~/services/api';
 
 import { updateDeliveryRequest } from '~/store/modules/delivery/actions';
-
-const schema = Yup.object().shape({
-  recipient: Yup.number().required('É preciso informar o destinatário.'),
-  deliveryman: Yup.number().required('É preciso informar o destinatário.'),
-  product: Yup.string().required('O produto é obrigatório'),
-});
 
 export default function DeliveryEdit() {
   const dispatch = useDispatch();
@@ -72,7 +65,7 @@ export default function DeliveryEdit() {
 
   return (
     <Container>
-      <Form initialData={delivery} onSubmit={handleSubmit} schema={schema}>
+      <Form initialData={delivery} onSubmit={handleSubmit}>
         <EditHeader>
           <p>Edição de encomendas</p>
           <div>

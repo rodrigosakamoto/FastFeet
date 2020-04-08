@@ -43,7 +43,7 @@ export default function Problems() {
   }
 
   async function handleModal(id) {
-    const response = await api.get(`/delivery/${id}/problems`);
+    const response = await api.get(`delivery/${id}/problems`);
 
     setItem(response.data);
     console.tron.log(response.data);

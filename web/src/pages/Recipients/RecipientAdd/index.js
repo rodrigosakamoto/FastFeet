@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Input } from '@rocketseat/unform';
-import { useDispatch, useSelector } from 'react-redux';
+import InputMask from 'react-input-mask';
+
+import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { MdDone, MdKeyboardArrowLeft } from 'react-icons/md';
 import { Container, Content } from './styles';
@@ -20,20 +22,28 @@ const schema = Yup.object().shape({
   state: Yup.string()
     .required('O nome do estado é obrigatório')
     .max(2, 'maximo dois caracteres'),
-  zipcode: Yup.string('Apenas numeros').required('O CEP é obrigatório'),
 });
 
 export default function RecipientAdd() {
   const dispatch = useDispatch();
-  const recipient = useSelector(state => state.recipient.recipient);
+  const [zipCode, setZipCode] = useState('');
 
-  function handleSubmit(data) {
+  function handleSubmit({ name, street, number, complement, city, state }) {
+    const data = {
+      name,
+      street,
+      number,
+      complement,
+      city,
+      state,
+      zipcode: zipCode,
+    };
     dispatch(addRecipientRequest(data));
   }
 
   return (
     <Container>
-      <Form initialData={recipient} schema={schema} onSubmit={handleSubmit}>
+      <Form schema={schema} onSubmit={handleSubmit}>
         <EditHeader>
           <p>Cadastro de destinatário</p>
           <div>
@@ -81,7 +91,14 @@ export default function RecipientAdd() {
             </div>
             <div className="item">
               <p>CEP</p>
-              <Input name="zipcode" />
+              <InputMask
+                mask="99999-999"
+                name="zipcode"
+                maskChar=" "
+                alwaysShowMask={false}
+                value={zipCode}
+                onChange={e => [setZipCode(e.target.value)]}
+              />
             </div>
           </div>
         </Content>

@@ -110,7 +110,7 @@ class RecipientController {
         .min(2)
         .required(),
       city: Yup.string().required(),
-      zipcode: Yup.number().required(),
+      zipcode: Yup.string().required(),
     });
 
     if (!(await schema.isValid(req.body))) {
