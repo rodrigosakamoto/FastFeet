@@ -66,8 +66,6 @@ export default function DeliveryDetails({ navigation }) {
   function handleConfirm(id) {
     if (delivery.end_date)
       Alert.alert('Falha', 'Essa encomenda ja foi entregue');
-    if (!delivery.start_date)
-      Alert.alert('Falha', 'Essa encomenda ainda não foi retirada');
     else
       navigation.navigate('ConfirmDelivery', {
         id,

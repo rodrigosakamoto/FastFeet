@@ -8,11 +8,12 @@ import { Container, Content } from './styles';
 import { addDeliverymanRequest } from '~/store/modules/deliveryman/actions';
 
 import EditHeader from '~/components/EditHeader';
-import AvatarInput from '../DeliverymanEdit/AvatarInput';
+import AvatarInput from '../AvatarInput';
 
 import history from '~/services/history';
 
 const schema = Yup.object().shape({
+  avatar_id: Yup.number(),
   name: Yup.string().required('O nome é obrigatório'),
   email: Yup.string()
     .email('Insira um e-mail válido')

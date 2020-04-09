@@ -120,7 +120,9 @@ export default function Problems() {
           </button>
           <h2>VISUALIZAR PROBLEMA</h2>
           {item.map(i => (
+            <>
             <p>{i.description}</p>
+            </>
           ))}
         </ModalBox>
       </ModalView>

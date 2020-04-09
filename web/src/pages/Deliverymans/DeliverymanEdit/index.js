@@ -8,11 +8,12 @@ import { Container, Content } from './styles';
 import { updateDeliverymanRequest } from '~/store/modules/deliveryman/actions';
 
 import EditHeader from '~/components/EditHeader';
-import AvatarInput from './AvatarInput';
+import AvatarInput from '../AvatarInput';
 
 import history from '~/services/history';
 
 const schema = Yup.object().shape({
+  avatar_id: Yup.number(),
   name: Yup.string().required('O nome é obrigatório'),
   email: Yup.string()
     .email('Insira um e-mail válido')
@@ -24,12 +25,15 @@ export default function DeliverymanEdit() {
   const deliveryman = useSelector(state => state.deliveryman.deliveryman);
 
   function handleSubmit({ name, email, avatar_id }) {
+    console.tron.log(name);
+
     const data = {
       id: deliveryman.id,
       name,
       email,
       avatar_id,
     };
+
     dispatch(updateDeliverymanRequest(data));
   }
 
