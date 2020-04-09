@@ -46,8 +46,7 @@ export default function Dashboard({ navigation }) {
 
   const [status, setStatus] = useState(false);
   const [deliveries, setDeliveries] = useState([]);
-
-  console.tron.log(deliveries);
+  const [refresh, setRefresh] = useState(false);
 
   async function loadDelivered() {
     const response = await api.get(`deliverymans/${deliveryman.id}/deliveries`);
@@ -59,6 +58,7 @@ export default function Dashboard({ navigation }) {
     const response = await api.get(`deliverymans/${deliveryman.id}/status`);
 
     setDeliveries(response.data);
+    setRefresh(false);
   }
 
   useEffect(() => {
@@ -83,7 +83,6 @@ export default function Dashboard({ navigation }) {
     navigation.navigate('DeliveryDetails', {
       delivery,
     });
-    console.tron.log(delivery);
   }
 
   async function handleWithdraw(delivery) {
@@ -96,6 +95,11 @@ export default function Dashboard({ navigation }) {
     } catch (err) {
       Alert.alert('Falha', 'Não foi possivel retirar a encomenda');
     }
+  }
+
+  function refreshList() {
+    setRefresh(true);
+    loadPending();
   }
 
   return (
@@ -137,6 +141,8 @@ export default function Dashboard({ navigation }) {
       </DeliveryStatus>
       <Deliveries
         data={deliveries}
+        onRefresh={refreshList}
+        refreshing={refresh}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => (
           <DeliveriesContainer>
