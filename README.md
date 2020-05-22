@@ -1,8 +1,19 @@
 <h1 align="center" >
-  <img src=".github/logo.png" title="FastFeet" width="300px"/>
+  <img src=".github/logo.png" title="FastFeet" width="200px"/>
 </h1>
 
-<h2>Desafio final do bootcamp GoStack 🚀</h2>
+<h3 align="center">FastFeet - Sistema de gerenciamento de uma transportadora ficticia.</h3>
+
+<p align="center">
+  <img align="center" src=".github/mobile.png" border="0" height="300"/>
+
+  <img align="center" src=".github/mobileDashboard.png" border="0" height="300" style="margin: 10px"/>
+
+  <img align="center" src=".github/details.png" border="0" height="300"/>
+</p>
+<p align="center">
+  <img align="center" src=".github/dashboard.png" border="0" height="300"/>
+</p>
 
 ## 💾 Instalação
 
@@ -66,3 +77,5 @@ $ yarn start
 ```
 
 
+---
+By [Rodrigo Sakamoto](https://www.linkedin.com/in/rodrigo-sakamoto/) 
