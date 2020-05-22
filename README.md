@@ -15,7 +15,7 @@
   <img align="center" src=".github/dashboard.png" border="0" height="300"/>
 </p>
 
-## 💾 Instalação
+<h2>💾 Instalação</h2>
 
 <h3> Instalação - Backend</h3>
 
@@ -29,11 +29,11 @@
 
 ```bash
 # Clone o repositório
-$ git clone https://github.com/rodrigosakamoto/GoStack-FastFeet.git
+$ git clone https://github.com/rodrigosakamoto/FastFeet.git
 
 # Em seguida execute:
 
-$ cd GoStack-FastFeet
+$ cd FastFeet
 $ cd backend
 
 $ yarn
@@ -45,12 +45,12 @@ $ yarn dev
 $ yarn queue
 ```
 
-<h3> Instalaçao - Frontend 💻 </h3>
+<h3> Instalação - Frontend 💻 </h3>
 
 <h4>Execute os comandos abaixo</h4>
 
 ```bash
-$ cd GoStack-FastFeet
+$ cd FastFeet
 $ cd web
 
 # Em seguida execute:
@@ -61,18 +61,18 @@ $ yarn start
 ```
 
 
-<h3> Instalaçao - Mobile 📱(Android) </h3>
+<h3> Instalação - Mobile 📱(Android) </h3>
 
 <h4>Execute os comandos abaixo</h4>
 
 ```bash
-$ cd GoStack-FastFeet
+$ cd FastFeet
 $ cd mobile
 # Em seguida execute:
 
 $ yarn
 
-$ react-native run android
+$ yarn android
 $ yarn start
 ```
 
